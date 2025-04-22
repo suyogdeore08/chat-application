@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Chat</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <div style="display: flex;">
+      <!-- Sidebar -->
+      <div style="width: 200px; padding: 10px; border-right: 2px solid #ccc;">
+        <h3>🟢 Active Users</h3>
+        <ul id="userList"></ul>
+      </div>
+  
+      <!-- Main Chat Area -->
+      <div style="flex: 1; padding: 10px;">
+        <div id="messages" style="height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 5px;"></div>
+        <input id="messageInput" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  
+
+  <script>
+    const socket = io();
+    let username = "";
+  
+    // Ask for username and notify server
+    window.onload = function () {
+      username = prompt("Enter your name:");
+      socket.emit("user joined", username);
+    };
+  
+    // Send message to server
+    function sendMessage() {
+      const input = document.getElementById("messageInput");
+      const msg = input.value;
+  
+      socket.emit("chat message", {
+        user: username,
+        text: msg
+      });
+  
+      input.value = "";
+    }
+  
+    // Handle incoming chat messages
+    socket.on("chat message", function (data) {
+      const messages = document.getElementById("messages");
+      messages.innerHTML += `<p><strong style="color:${data.color}">${data.user}:</strong> ${data.text}</p>`;
+    });
+  
+    // Handle when a user joins
+    socket.on("user joined", function (data) {
+  const messages = document.getElementById("messages");
+  messages.innerHTML += `<p style="color:${data.color}"><em>[${data.time}] 👋 ${data.username} has joined the chat</em></p>`;
+});
+
+  
+    // Handle when a user leaves
+    socket.on("user left", function (data) {
+  const messages = document.getElementById("messages");
+  messages.innerHTML += `<p><em>[${data.time}] 👋 ${data.username} has left the chat</em></p>`;
+});
+
+socket.on("active users", function (userList) {
+  const listEl = document.getElementById("userList");
+  listEl.innerHTML = ""; // Clear the current list
+  userList.forEach((user) => {
+    const li = document.createElement("li");
+    li.textContent = user;
+    listEl.appendChild(li);
+  });
+});
+
+
+  </script>
+  
+  
+</body>
+</html>

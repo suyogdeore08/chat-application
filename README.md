@@ -55,8 +55,8 @@ chat-application/
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_REPOSITORY_URL
-cd YOUR_REPOSITORY_FOLDER
+git clone https://github.com/suyogdeore08/chat-application.git
+cd chat-application
 ```
 
 Replace the placeholders with your actual repository URL and directory name.
@@ -76,16 +76,6 @@ venv\Scripts\activate
 python3 -m venv venv
 source venv/bin/activate
 ```
-
-### 3. Install dependencies
-
-If your repository includes `requirements.txt`:
-
-```bash
-pip install -r requirements.txt
-```
-
-Otherwise, install the packages specified by your project.
 
 ### 4. Run the application
 
@@ -131,11 +121,5 @@ Potential enhancements include user authentication, persistent message history, 
 ## 🤝 Contributing
 
 Suggestions and improvements are welcome. Fork the repository, create a branch for your changes, and submit a pull request.
-
-## 📄 License
-
-Add a license if you intend to distribute the project under an open-source license.
-
----
 
 **Built with Python, Flask, and Flask-SocketIO.**
